@@ -2,7 +2,7 @@
 
 namespace upload;
 
-require_once "vendor/autoload.php";
+require_once "Engine/vendor/autoload.php";
 
 use Spatie\PdfToImage\Pdf;
 

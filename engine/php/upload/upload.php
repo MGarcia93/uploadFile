@@ -3,8 +3,9 @@
 namespace upload;
 
 use ExceptionUpload;
-use uploar\Exceptions\FormatInvalid;
+use upload\basicFile;
 use uploar\Exceptions\TypeInvalid;
+use upload\pdf;
 
 class upload
 {
@@ -15,8 +16,15 @@ class upload
     function __construct(string $type, iterable $files, ?int $width = null, ?int $height = null)
     {
         $this->uploaded = $this->factory(strtolower($type));
-        $this->uploaded->loadFiles($files);
+        $this->loadFiles($files);
         $this->uploaded->setResolution($width, $height);
+    }
+    private function loadFiles(iterable $files){
+        $file=[];
+        foreach($files as $f){
+            
+        }
+        $this->uploaded->loadFiles($files);
     }
     public function __invoke(): void
     {

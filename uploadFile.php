@@ -2,9 +2,12 @@
 require_once "initiliaze.php";
 
 use upload\upload;
-use Upload\Exceptios\ExceptionUpload;
+require_once "Engine/vendor/autoload.php";
 
 header('Content-Type: application/json; charset=utf-8');
+if(empty($_POST)){
+    $_POST=file_get_contents('php://input');
+}
 class UploadFile
 {
     private $uploaded;
@@ -14,10 +17,12 @@ class UploadFile
     }
     function __invoke()
     {
-        $this->uploaded();
+        $this->uploaded->__invoke();
     }
 }
 try {
-} catch (ExceptionUpload $ex) {
+    $uploaded = new upload($_POST['type']??"void",$_FILES['file']);
+    $uploaded();
+} catch (Exception $ex) {
     die();
 }

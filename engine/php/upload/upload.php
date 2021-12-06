@@ -2,9 +2,9 @@
 
 namespace upload;
 
-use ExceptionUpload;
 use upload\basicFile;
-use uploar\Exceptions\TypeInvalid;
+use upload\Exceptions\NotFile;
+use upload\Exceptions\TypeInvalid;
 use upload\pdf;
 
 class upload
@@ -13,18 +13,21 @@ class upload
     protected array $validType = ['pdf', 'image', 'zip'];
 
 
-    function __construct(string $type, iterable $files, ?int $width = null, ?int $height = null)
+    function __construct(string $type, array $files, string $product, ?int $width = null, ?int $height = null)
     {
         $this->uploaded = $this->factory(strtolower($type));
         $this->loadFiles($files);
         $this->uploaded->setResolution($width, $height);
+        $this->uploaded->setProduct($product);
     }
-    private function loadFiles(iterable $files){
-        $file=[];
-        foreach($files as $f){
-            
+    private function loadFiles(array $files)
+    {
+        if (empty($files)) {
+            throw new NotFile();
         }
-        $this->uploaded->loadFiles($files);
+        $this->uploaded->loadFiles(array_map(function ($file) {
+            return $file['tmp_name'];
+        }, $files));
     }
     public function __invoke(): void
     {

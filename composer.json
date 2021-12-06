@@ -1,0 +1,8 @@
+{
+  "config": {
+    "vendor-dir": "./Engine/php/vendor"
+  },
+  "require": {
+    "spatie/pdf-to-image": "^1.2"
+  }
+}

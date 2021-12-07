@@ -2,7 +2,6 @@
 
 namespace upload\Exceptions;
 
-use ExceptionUpload;
 
 class TypeInvalid extends ExceptionUpload
 {

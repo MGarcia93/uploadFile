@@ -13,7 +13,7 @@ if (empty($_POST)) {
 class UploadFile
 {
     private $uploaded;
-    function __construct(string $type, array $files, string $product, string $date, ?int $width = null, ?int $height = null)
+    function __construct(string $type, ?array $files = [], string $product, string $date, ?int $width = null, ?int $height = null)
     {
         $this->uploaded = new upload($type, $files, $product, $date, $width, $height);
     }
@@ -25,7 +25,7 @@ class UploadFile
 }
 try {
 
-    $uploaded = new UploadFile($_POST['type'] ?? "void", $_FILES['file'], $_POST['product'], $_POST['date']);
+    $uploaded = new UploadFile($_POST['type'] ?? "void", $_FILES['file'] ?? [], $_POST['product'] ?? '', $_POST['date'] ?? '');
     $uploaded();
 } catch (\Exception $ex) {
     die();

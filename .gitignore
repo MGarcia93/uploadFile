@@ -1,2 +1,5 @@
 ##vendor composer   
 engine/php/vendor
+
+## Configuracion 
+Config.php

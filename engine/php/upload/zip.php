@@ -8,7 +8,6 @@ use upload\Type\Image as TypeImage;
 use upload\Type\Pdf as TypePdf;
 use upload\Type\Zip as TypeZip;
 
-use function PHPUnit\Framework\fileExists;
 
 final class zip extends baseFile
 {
@@ -22,11 +21,11 @@ final class zip extends baseFile
     private function extract($file)
     {
         $zip = new \ZipArchive;
-        if (!fileExists($this->folder)) {
+        if (!file_exists($this->folder)) {
             mkdir($this->folder, "777");
         }
         $zip->open($file);
-        $zip->extractTo('./');
+        $zip->extractTo($this->folder);
         $zip->close();
     }
     private function readFolder()
@@ -68,7 +67,8 @@ final class zip extends baseFile
     }
     private function deleteFolder()
     {
-        rmdir($this->folder);
+        if (file_exists($this->folder))
+            rmdir($this->folder);
     }
     function __destruct()
     {

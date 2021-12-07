@@ -2,7 +2,7 @@
 
 namespace upload\Exceptions;
 
-use ExceptionUpload;
+
 
 class NotFile extends ExceptionUpload
 {

@@ -1,6 +1,6 @@
 <?php
 
-use upload\Exceptions;
+namespace upload\Exceptions;
 
 class ExceptionUpload extends \Exception
 {

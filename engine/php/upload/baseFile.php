@@ -40,7 +40,7 @@ class baseFile
 
     public  function setDate(?string $date): void
     {
-        $this->date = date("dmy", !empty($date) ? strtotime($date) : "now");
+        $this->date = !empty($date) ? date("dmy",  strtotime($date)) : date("dmy");
     }
     protected function incrementCount()
     {

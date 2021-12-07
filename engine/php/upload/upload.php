@@ -27,12 +27,16 @@ final class upload
             throw new NotFile();
         }
         $this->uploaded->loadFiles(array_map(function ($file) {
+            if (empty($file)) {
+                throw new NotFile();
+            }
             return $file;
         }, $files['tmp_name']));
     }
     public function __invoke(): void
     {
         $this->uploaded->__invoke();
+        unset($this->uploaded);
     }
     private function  isValidType(string $type): bool
     {

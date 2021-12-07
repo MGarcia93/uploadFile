@@ -4,5 +4,10 @@
   },
   "require": {
     "spatie/pdf-to-image": "^1.2"
+  },
+  "scripts": {
+    "phpunit": [
+      "php ./engine/php/vendor/bin/phpunit"
+    ]
   }
 }

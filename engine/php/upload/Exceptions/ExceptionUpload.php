@@ -9,9 +9,9 @@ class ExceptionUpload extends \Exception
     {
         parent::__construct($error, 0);
         http_response_code($code);
-        echo "{
-            \"error\"=>$error,
-            \"code\"=>$code
-        }";
+        echo json_encode([
+            "error" => $error,
+            "code" => $code
+        ]);
     }
 }

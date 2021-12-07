@@ -2,60 +2,43 @@
 
 namespace upload;
 
-class pdf implements basicFile
-{
-    private array $files;
-    private ?int $width;
-    private ?int $height;
-    private string $product;
-    private int $countImage = 0;
-    const TEMP = __DIR__ . "\\img\\temp.png";
+use upload\Exceptions\NotIsPdf;
+use upload\Type\Pdf as TypePdf;
 
-    function loadFiles(array $files): void
+final class pdf extends baseFile
+{
+    const TEMP = dirbase . "\\img\\temp.jpg";
+    function __construct()
     {
-        $this->files = $files;
-    }
-    function setResolution(?int $width = null, ?int $height = null): void
-    {
-        $this->width = $width;
-        $this->height = $height;
-    }
-    function setProduct(string $product): void
-    {
-        $this->product = $product;
+        $this->mymetype = TypePdf::getTypes();
     }
     public function __invoke(): void
     {
         foreach ($this->files as $file) {
-            $filename = explode(".", basename($file))[0];
+            if (!$this->isValidFormat($file)) {
+                throw new NotIsPdf($this->getMymeTypeFile($file));
+            }
             $pdf = new \Spatie\PdfToImage\Pdf($file);
             $quantityPage = $pdf->getNumberOfPages();
             for ($i = 0; $i < $quantityPage; $i++) {
                 $pdf->setPage($i + 1);
-                $pdf->getPag->setOutputFormat('png')
+                $pdf->setOutputFormat('jpg')
                     ->saveImage(self::TEMP);
                 $this->createImage();
             }
         }
     }
-    private function incrementCount()
-    {
-        $this->countImage++;
-    }
-    private function getNameImage()
-    {
-        return __DIR__ . "/img/pages/{$this->product}" . date('dmY') . "-" . str_pad($this->countImage, 3, "0", STR_PAD_RIGHT) . "P.png";
-    }
+
     private function createImage()
     {
-        global $_CONFIG;
+
         list($widthImg, $heightImg) = getimagesize(self::TEMP);
         if ($this->width == null) {
             $this->width = $widthImg;
             $this->height = $heightImg;
         }
 
-        if ($this->width > $widthImg * 1.15) {
+        if ($widthImg > ($this->width * 1.15)) {
             //is doble image 
             $this->divideImage();
         } else {
@@ -66,14 +49,14 @@ class pdf implements basicFile
 
     private function divideImage()
     {
-        $image = imagecreatefrompng(self::TEMP);
+        $image = imagecreatefromjpeg(self::TEMP);
         list($width, $height) = getimagesize(self::TEMP);
         $newWidth = round($width / 2);
         for ($i = 0; $i < 2; $i++) {
             $this->incrementCount();
             $newImage = imagecreatetruecolor($newWidth, $height);
-            imagecopyresampled($newImage, $image, 0, 0, $width * $i, 0, $width, $height, $width, $height);
-            imagepng($newImage, $this->getNameImage, 7);
+            imagecopyresampled($newImage, $image, 0, 0, $newWidth * $i, 0, $newWidth, $height, $newWidth, $height);
+            imagejpeg($newImage, $this->getNameImage(), 7);
         }
     }
 }

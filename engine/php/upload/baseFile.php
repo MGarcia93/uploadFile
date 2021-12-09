@@ -11,8 +11,12 @@ class baseFile
     protected string $product;
     protected array $mymetype;
     protected int $countImage = 0;
+    protected string $fileTemp;
 
-
+    function __construct()
+    {
+        $this->fileTemp = dirbase . "\\Temp\\" . (string) uniqid("temp");
+    }
     public function __invoke()
     {
     }
@@ -46,8 +50,36 @@ class baseFile
     {
         $this->countImage++;
     }
-    protected function getNameImage($ext = "jpg")
+
+    protected function pathFileTemp($ext = "jpg")
     {
-        return dirbase . "/img/pages/{$this->product}{$this->date}-" . str_pad($this->countImage, 3, "0", STR_PAD_LEFT) . "P.{$ext}";
+        return "{$this->fileTemp}.{$ext}";
+    }
+
+    protected function createImage()
+    {
+        $this->incrementCount();
+        switch ($this->getMymeTypeFile($this->pathFileTemp())) {
+            case "image/jpeg":
+                $image = imagecreatefromjpeg($this->pathFileTemp());
+                break;
+            case "image/webp":
+                rename($this->pathFileTemp(), $this->getNameImage());
+                return;
+                break;
+            case "image/png":
+                $image = imagecreatefrompng($this->pathFileTemp());
+                imagepalettetotruecolor($image);
+                imagealphablending($image, true);
+                imagesavealpha($image, true);
+                break;
+        }
+        imagewebp($image, $this->getNameImage(), 100);
+        imagedestroy($image);
+        unlink($this->pathFileTemp());
+    }
+    protected function getNameImage()
+    {
+        return dirbase . "/img/pages/{$this->product}{$this->date}-" . str_pad($this->countImage, 3, "0", STR_PAD_LEFT) . "P.webp";
     }
 }

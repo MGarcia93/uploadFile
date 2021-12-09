@@ -9,6 +9,7 @@ final class image extends baseFile
 {
     function __construct()
     {
+        parent::__construct();
         $this->mymetype = TypeImage::getTypes();
     }
     function __invoke()
@@ -17,9 +18,8 @@ final class image extends baseFile
             if (!$this->isValidFormat($file)) {
                 throw new NotIsImage($this->getMymeTypeFile($file));
             }
-            $this->incrementCount();
-            $ext = image_type_to_extension(getimagesize($file)[2]);
-            rename($file, $this->getNameImage(str_replace(".", "", $ext)));
+            rename($file, $this->pathFileTemp());
+            $this->createImage();
         }
     }
 }

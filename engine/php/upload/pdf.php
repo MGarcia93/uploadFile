@@ -7,9 +7,10 @@ use upload\Type\Pdf as TypePdf;
 
 final class pdf extends baseFile
 {
-    const TEMP = dirbase . "\\temp\\temp.jpg";
+
     function __construct()
     {
+        parent::__construct();
         $this->mymetype = TypePdf::getTypes();
     }
     public function __invoke(): void
@@ -23,16 +24,15 @@ final class pdf extends baseFile
             for ($i = 0; $i < $quantityPage; $i++) {
                 $pdf->setPage($i + 1);
                 $pdf->setOutputFormat('jpg')
-                    ->saveImage(self::TEMP);
+                    ->saveImage($this->pathFileTemp());
                 $this->createImage();
             }
         }
     }
 
-    private function createImage()
+    protected function createImage()
     {
-
-        list($widthImg, $heightImg) = getimagesize(self::TEMP);
+        list($widthImg, $heightImg) = getimagesize($this->pathFileTemp());
         if ($this->width == null) {
             $this->width = $widthImg;
             $this->height = $heightImg;
@@ -42,21 +42,20 @@ final class pdf extends baseFile
             //is doble image 
             $this->divideImage();
         } else {
-            $this->incrementCount();
-            rename(self::TEMP, $this->getNameImage());
+            parent::createImage();
         }
     }
 
     private function divideImage()
     {
-        $image = imagecreatefromjpeg(self::TEMP);
-        list($width, $height) = getimagesize(self::TEMP);
+        $image = imagecreatefromjpeg($this->pathFileTemp());
+        list($width, $height) = getimagesize($this->pathFileTemp());
         $newWidth = round($width / 2);
         for ($i = 0; $i < 2; $i++) {
             $this->incrementCount();
             $newImage = imagecreatetruecolor($newWidth, $height);
             imagecopyresampled($newImage, $image, 0, 0, $newWidth * $i, 0, $newWidth, $height, $newWidth, $height);
-            imagejpeg($newImage, $this->getNameImage(), 7);
+            imagewebp($newImage, $this->getNameImage());
         }
     }
 }

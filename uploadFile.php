@@ -1,5 +1,5 @@
 <?php
-require_once "initiliaze.php";
+require_once "initialize.php";
 
 use upload\upload;
 

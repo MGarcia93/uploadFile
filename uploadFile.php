@@ -1,5 +1,6 @@
 <?php
 require_once "initialize.php";
+set_time_limit(900);
 
 use upload\upload;
 

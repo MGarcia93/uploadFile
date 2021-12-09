@@ -15,27 +15,21 @@ final class pdf extends baseFile
     }
     public function __invoke(): void
     {
-        file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "inicio de Upload pdf:{$this->pathFileTemp()}" . PHP_EOL, FILE_APPEND);
+
         foreach ($this->files as $file) {
-            file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "inicio de manejo de file:{$file}" . PHP_EOL, FILE_APPEND);
+
             if (!$this->isValidFormat($file)) {
                 throw new NotIsPdf($this->getMymeTypeFile($file));
             }
-            file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "creo pdftoimage class" . PHP_EOL, FILE_APPEND);
             $pdf = new renderPdf($file);
-            file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "busco cantidad de paginas en el pdf:{$file}" . PHP_EOL, FILE_APPEND);
             $quantityPage = $pdf->getNumberOfPages();
             for ($i = 0; $i < $quantityPage; $i++) {
-                file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "seteo pagina:{$i}" . PHP_EOL, FILE_APPEND);
                 $pdf->setPage($i + 1);
-                file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "grabo imagen temporal" . PHP_EOL, FILE_APPEND);
                 $pdf->setOutputFormat('jpg')
                     ->saveImage($this->pathFileTemp());
                 $this->createImage();
             }
-            file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "fin de manejo de file:{$file}" . PHP_EOL, FILE_APPEND);
         }
-        file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "fin de Upload pdf:{$this->pathFileTemp()}" . PHP_EOL, FILE_APPEND);
     }
 
     protected function createImage()

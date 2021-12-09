@@ -58,9 +58,8 @@ class baseFile
 
     protected function createImage()
     {
-        file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "inicio de creacion de imagen:{$this->pathFileTemp()}" . PHP_EOL, FILE_APPEND);
+
         $this->incrementCount();
-        file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "verifico tipo" . PHP_EOL, FILE_APPEND);
         switch ($this->getMymeTypeFile($this->pathFileTemp())) {
             case "image/jpeg":
                 $image = imagecreatefromjpeg($this->pathFileTemp());
@@ -76,11 +75,9 @@ class baseFile
                 imagesavealpha($image, true);
                 break;
         }
-        file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "creo webp:{$this->pathFileTemp()}" . PHP_EOL, FILE_APPEND);
         imagewebp($image, $this->getNameImage(), 100);
         imagedestroy($image);
         unlink($this->pathFileTemp());
-        file_put_contents("temp/execution.t",  date("Ymd h:i:s:v") . "-" . "fin de creacion de imagen:{$this->pathFileTemp()}" . PHP_EOL, FILE_APPEND);
     }
     protected function getNameImage()
     {

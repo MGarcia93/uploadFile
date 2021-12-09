@@ -7,7 +7,7 @@ use upload\Type\Pdf as TypePdf;
 
 final class pdf extends baseFile
 {
-    const TEMP = dirbase . "\\img\\temp.jpg";
+    const TEMP = dirbase . "\\temp\\temp.jpg";
     function __construct()
     {
         $this->mymetype = TypePdf::getTypes();

@@ -16,7 +16,7 @@ final class zip extends baseFile
     function __construct()
     {
         $this->mymetype = TypeZip::getTypes();
-        $this->folder = dirbase . "\\" . (string) uniqid("extract");
+        $this->folder = dirbase . "\\temp\\" . (string) uniqid("extract");
     }
     private function extract($file)
     {

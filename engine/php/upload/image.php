@@ -19,7 +19,7 @@ final class image extends baseFile
             }
             $this->incrementCount();
             $ext = image_type_to_extension(getimagesize($file)[2]);
-            rename($file, $this->getNameImage($ext));
+            rename($file, $this->getNameImage(str_replace(".", "", $ext)));
         }
     }
 }

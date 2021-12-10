@@ -3,6 +3,7 @@
 namespace upload;
 
 use upload\Exceptions\NotIsPdf;
+use upload\Exceptions\NotSaveImage;
 use upload\Type\Pdf as TypePdf;
 
 final class pdf extends baseFile
@@ -25,8 +26,10 @@ final class pdf extends baseFile
             $quantityPage = $pdf->getNumberOfPages();
             for ($i = 0; $i < $quantityPage; $i++) {
                 $pdf->setPage($i + 1);
-                $pdf->setOutputFormat('jpg')
-                    ->saveImage($this->pathFileTemp());
+                $pdf->setOutputFormat('jpg');
+                if (!$pdf->saveImage($this->pathFileTemp())) {
+                    throw new NotSaveImage($this->pathFileTemp());
+                }
                 $this->createImage();
             }
         }

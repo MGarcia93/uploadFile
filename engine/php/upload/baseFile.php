@@ -75,9 +75,8 @@ class baseFile
                 imagesavealpha($image, true);
                 break;
         }
-        imagewebp($image, $this->getNameImage(), 100);
+        imagewebp($image, $this->getNameImage());
         imagedestroy($image);
-        unlink($this->pathFileTemp());
     }
     protected function getNameImage()
     {

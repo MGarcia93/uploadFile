@@ -2,12 +2,14 @@
 
 namespace upload\Exceptions;
 
+use Exceptions\Handle;
 
 
-class NotFile extends ExceptionUpload
+
+class NotFile extends Handle
 {
     function __construct()
     {
-        parent::__construct("No se recibieron archivos", 200);
+        parent::__construct("", "No se recibieron archivos", 200);
     }
 }

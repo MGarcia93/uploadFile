@@ -2,11 +2,12 @@
 
 namespace upload\Exceptions;
 
+use Exceptions\Handle;
 
-class NotIsPdf extends ExceptionUpload
+class NotIsPdf extends Handle
 {
     function __construct($type, $code = 400)
     {
-        parent::__construct("Selecciono el formato pdf pero el archivo leido no es un pdf, formato recibido: $type", $code);
+        parent::__construct("FILE_INVALID", "Selecciono el formato pdf pero el archivo leido no es un pdf, formato recibido: $type", $code);
     }
 }

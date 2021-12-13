@@ -37,3 +37,4 @@ spl_autoload_register(function ($class) {
         require $file;
     }
 });
+define("dirbase", __DIR__);

@@ -3,7 +3,8 @@
     "vendor-dir": "./Engine/php/vendor"
   },
   "require": {
-    "spatie/pdf-to-image": "^1.2"
+    "spatie/pdf-to-image": "^1.2",
+    "firebase/php-jwt": "^5.5"
   },
   "scripts": {
     "phpunit": [

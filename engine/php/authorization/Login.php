@@ -2,7 +2,7 @@
 
 namespace authorization;
 
-class auth
+class Login
 {
     private BaseAuth $auth;
     public function __construct(baseAuth $auth)

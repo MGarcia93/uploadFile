@@ -10,9 +10,10 @@ class Handle extends \Exception
         parent::__construct($message, $code);
         http_response_code($code);
         echo json_encode([
-            "ERROR" => $name,
+            "error" => $name,
             "message" => $message,
             "status" => $code
         ]);
+        exit();
     }
 }

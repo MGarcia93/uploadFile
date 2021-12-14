@@ -6,7 +6,6 @@ require_once "../../initialize.php";
 require_once "../../Engine/php/vendor/autoload.php";
 
 use api\Api;
-use Exception;
 use Exceptions\Handle;
 use authorization\Auth;
 use authorization\Login;
@@ -16,7 +15,7 @@ use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
 
 if (empty($_POST)) {
-    $_POST = file_get_contents('php://input');
+    $_POST = json_decode(file_get_contents('php://input'), true);
 }
 
 class  page extends Api
@@ -26,7 +25,7 @@ class  page extends Api
     private string $password;
 
 
-    public function __contruct($user, $password)
+    public function __construct($user, $password)
     {
         $this->user = $user;
         $this->password = $password;
@@ -48,12 +47,14 @@ class  page extends Api
         }
     }
 }
-
 try {
+
     if (empty($_POST) || empty($_POST['user']) || empty($_POST['password'])) {
-        throw new NotParam(403);
+        throw new NotParam(401);
     }
-    $login = new Login(new userFromConfig());
-    $user = $login($_POST['user'], $_POST['password']);
-} catch (Exception $ex) {
+    $page = new page($_POST['user'], $_POST['password']);
+    $page();
+} catch (\Exception $ex) {
+    http_response_code(500);
+    exit();
 }

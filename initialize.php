@@ -24,7 +24,7 @@ header('Content-Type: text/html; charset=UTF-8');
 ////////////////////////////////////////////////////////////////////////////////
 spl_autoload_register(function ($class) {
     $prefix = '';
-    $base_dir = __DIR__ . '/Engine/php/';
+    $base_dir = __DIR__ . (explode("\\", $class)[0] != "api" ? '/Engine/php/' : "/");
 
     $len = strlen($prefix);
     if (strncmp($prefix, $class, $len) !== 0) {
@@ -37,4 +37,7 @@ spl_autoload_register(function ($class) {
         require $file;
     }
 });
+require_once "config.php";
+require_once 'BL_Lib/include/CTemplateManager.php';
+require_once 'BL_Lib/include/CLogManager.php';
 define("dirbase", __DIR__);

@@ -5,7 +5,8 @@ namespace api\upload;
 require_once "../../initialize.php";
 set_time_limit(900);
 
-use api\api;
+use api\Api;
+use authorization\Auth;
 use upload\upload;
 
 require_once "../../Engine/php/vendor/autoload.php";
@@ -23,6 +24,7 @@ class UploadFile extends Api
     }
     function __invoke()
     {
+        Auth::Check(Auth::getBearerToken());
         $this->uploaded->__invoke();
         $this->response("", 204);
     }

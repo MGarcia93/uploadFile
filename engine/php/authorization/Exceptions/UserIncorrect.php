@@ -8,6 +8,6 @@ class UserIncorrect extends Handle
 {
     public function __construct()
     {
-        parent::__construct("AUTHENTICATION_FAILURE", "Usuario o password incorrecto", 403);
+        parent::__construct("AUTHENTICATION_FAILURE", "Usuario o password incorrecto", 401);
     }
 }

@@ -18,7 +18,16 @@ en el archivo zip puede ir pdf o imagen y lo trabajara como se especifico antes
 
 ## Uso
 
-llamar por POST al uploadFile.php pasandole los siguientes parametros( pasarlos en multipart/form-data):
+### generar token
+
+para generar token de autorizacion llamar por POST a api/auth/login pasandoles los parametro los siguientes parametros:
+
+- user:nombre del usuario
+- password
+
+### Subir archivo
+
+llamar por POST al api/uploaded/ pasandole el token de autorizacion por oauth y pasar los siguientes parametros( pasarlos en multipart/form-data):
 
 - type: Tipo de archivo que subiras. tipos admitidos pdf,image,zip
 - date: fecha de la cual pertenece las paginas(formato de fecha dddmmyy)

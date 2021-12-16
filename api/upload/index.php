@@ -2,6 +2,7 @@
 
 namespace api\upload;
 
+header('Access-Control-Allow-Origin: *');
 require_once "../../initialize.php";
 set_time_limit(900);
 

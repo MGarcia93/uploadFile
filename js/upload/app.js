@@ -77,37 +77,45 @@ const Login = async (e) => {
 }
 const UploadFile = async (e) => {
     e.preventDefault();
-    if (isOkeverythingFields()) {
-        let data = new FormData();
-        const files = document.getElementById("file").files;
-        const btn = document.getElementById("btnUploadFile");
-        btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        Subiendo...`;
-        btn.disabled = true;
-        for (const file of files) {
-            data.append('file[]', file, file.name)
+    try {
+
+        if (isOkeverythingFields()) {
+            let data = new FormData();
+            const files = document.getElementById("file").files;
+            const btn = document.getElementById("btnUploadFile");
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Subiendo...`;
+            btn.disabled = true;
+            for (const file of files) {
+                data.append('file[]', file, file.name)
+            }
+
+
+            data.append("product", document.getElementById("product").value);
+            data.append("type", document.getElementById("type").value);
+            data.append("date", document.getElementById("date").value);
+
+            let response = await fetch(e.target.action, {
+                method: "POST",
+                mode: 'cors',
+                headers: {
+                    "Authorization": "Bearer " + document.getElementById("token").value,
+                    'Access-Control-Allow-Origin': '*',
+                },
+                body: data
+            });
+            btn.innerText = "Subir";
+            btn.disabled = false;
+            if (response.status == 204) {
+                writeMessage("archivo subido correctamente", "success");
+            } else {
+                let error = await response.json();
+                writeMessage(`${error.error}: ${error.message}`, "error");
+            }
         }
+    } catch (error) {
+        writeMessage(`${error.message}`, "error");
 
-
-        data.append("product", document.getElementById("product").value);
-        data.append("type", document.getElementById("type").value);
-        data.append("date", document.getElementById("date").value);
-
-        let response = await fetch(e.target.action, {
-            method: "POST",
-            headers: {
-                "Authorization": "Bearer " + document.getElementById("token").value
-            },
-            body: data
-        });
-        btn.innerText = "Subir";
-        btn.disabled = false;
-        if (response.status == 204) {
-            writeMessage("archivo subido correctamente", "success");
-        } else {
-            let error = await response.json();
-            writeMessage(`${error.error}: ${error.message}`, "error");
-        }
     }
 }
 
